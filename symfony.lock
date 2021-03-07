@@ -150,6 +150,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v4.4.20"
+    },
     "symfony/framework-bundle": {
         "version": "4.4",
         "recipe": {
@@ -183,6 +186,9 @@
     "symfony/inflector": {
         "version": "v4.4.20"
     },
+    "symfony/intl": {
+        "version": "v4.4.20"
+    },
     "symfony/mime": {
         "version": "v4.4.20"
     },
@@ -204,6 +210,9 @@
             "config/packages/test/monolog.yaml"
         ]
     },
+    "symfony/options-resolver": {
+        "version": "v4.4.20"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.3",
         "recipe": {
@@ -220,6 +229,9 @@
         ]
     },
     "symfony/polyfill-apcu": {
+        "version": "v1.22.1"
+    },
+    "symfony/polyfill-intl-icu": {
         "version": "v1.22.1"
     },
     "symfony/polyfill-intl-idn": {
