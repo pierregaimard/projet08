@@ -11,6 +11,12 @@ services:
     AppBundle\:
         resource: "../../src/AppBundle"
         exclude: "../../src/AppBundle/{Entity, Repository}"
+
+    AppBundle\Controller\:
+        resource: "../../src/AppBundle/Controller"
+        public: true
+        tags: ['controller.service_arguments']
+
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
