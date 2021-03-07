@@ -28,7 +28,7 @@
         "symfony/flex": "^1.12"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^4.0"
+        "symfony/phpunit-bridge": "^5.2"
     },
     "scripts": {
         "symfony-scripts": [
