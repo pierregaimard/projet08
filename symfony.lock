@@ -123,6 +123,9 @@
     "symfony/asset": {
         "version": "v4.4.20"
     },
+    "symfony/browser-kit": {
+        "version": "v4.4.20"
+    },
     "symfony/cache": {
         "version": "v4.4.20"
     },
@@ -144,6 +147,9 @@
             "bin/console",
             "config/bootstrap.php"
         ]
+    },
+    "symfony/css-selector": {
+        "version": "v4.4.20"
     },
     "symfony/debug": {
         "version": "v4.4.20"
@@ -170,6 +176,9 @@
         "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
+        "version": "v4.4.20"
+    },
+    "symfony/dom-crawler": {
         "version": "v4.4.20"
     },
     "symfony/dotenv": {
@@ -382,6 +391,9 @@
             "config/packages/swiftmailer.yaml",
             "config/packages/test/swiftmailer.yaml"
         ]
+    },
+    "symfony/test-pack": {
+        "version": "v1.0.7"
     },
     "symfony/translation-contracts": {
         "version": "v2.3.0"
