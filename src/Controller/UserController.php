@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use AppBundle\Entity\User;
-use AppBundle\Form\UserType;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
