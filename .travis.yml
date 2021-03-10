@@ -9,7 +9,7 @@ dist: focal
 # Git branches
 branches:
   only:
-    - master
+    - /^feature.*$/
 
 install:
   - composer install
