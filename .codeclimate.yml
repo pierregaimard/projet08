@@ -1,0 +1,21 @@
+plugins:
+  phpcodesniffer:
+    enabled: true
+    channel: beta
+    config:
+      standard: "PSR12"
+  phpmd:
+    enabled: true
+    config:
+      file_extensions:
+        - php
+exclude_patterns:
+  - "bin/"
+  - "config/"
+  - "public/"
+  - "src/Kernel.php"
+  - "tests/"
+  - "var/"
+  - "vendor/"
+  - "node_modules/"
+  - "*.*"
