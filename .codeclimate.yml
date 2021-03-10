@@ -9,6 +9,7 @@ plugins:
     config:
       file_extensions:
         - php
+      rulesets: "cleancode,codesize,controversial,design,naming,unusedcode,phpmd.ruleset.xml"
 exclude_patterns:
   - "bin/"
   - "config/"
