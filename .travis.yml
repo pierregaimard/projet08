@@ -1,0 +1,32 @@
+language: php
+php:
+  - '7.4'
+
+os: linux
+dist: focal
+
+
+# Git branches
+branches:
+  only:
+    - master
+
+install:
+  - composer install
+  - php bin/phpunit
+
+before_script:
+  # Prepare code coverage report for CodeClimate
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script: php bin/phpunit --coverage-clover clover.xml
+
+after_script:
+  # Send code coverage report to CodeClimate
+  - ./cc-test-reporter after-build -t clover --exit-code $TRAVIS_TEST_RESULT
+
+notifications:
+  slack:
+    secure: "bqUBYrIdqxKegqJEZRncXmSdxCeVEgKDvWZlSZcUhILMuCQL6TFp67qGg+3nL88oeV07AeSFmIhF7q1TYLptNE0XDYtG43kybBKsDEzjPd2ROpT9p6+lArmgfJ7FtNTqLduu4/q/b2RzO/kyVcPTdDGWAKq3My5y4jUe+DcKS3MUz87l5Vv/TKIvJdlMxtkjyGoH44K6N4W0M43s/+34BDfHwGmbHGHoIKiv+YMUS82ANH9EGpCM8GioXoPFbEOihfzUAy0QJ2PbPTa8PWne6UNMvCsbFecc0IYyeGDhnHIX+k/FS3GMHmNd9kMbxxc1ayK5AmE7fhibZw6MjjfFz0Xg3JX7s8aigVFXvSGo0mIObXjPV0miaX5y3zKrBBr6p2+bYXEAQ6fI3GufILXhuwqeCF6YXO7G7XboqezcTM0eP4JD0MsYHpoTBm5XicQ7t8tSJdY5kh0eLpVvC8wYauzWjijt+xAD2CO+agGPWjMWA+Q5CfXiXJcde2udMaKJ0M76S6K0w2U1dFY67EYtaykbNhWXvm5BQA3E5RMEUQNcFgjD0aZSHOlrLPPjvSUx5UsKY1W/vg2tXjG/vI6KQloaxKb4X+w5/W0KdtB1CB/ACGqsHQG6GrCDTmy+YbNq1i1v7gzHw9n7Ccmht6Ga7kf3t+IXKPPZslFHSMr8TtA="
