@@ -29,8 +29,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/logout", name="logout")
      */
-    public function logoutCheck()
+    public function logout()
     {
-        // This code is never executed.
     }
 }
