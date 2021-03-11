@@ -17,13 +17,19 @@ security:
         main:
             anonymous: lazy
             provider: app_user_provider
-            pattern: ^/
-            form_login:
-                login_path: login
-                check_path: login_check
-                always_use_default_target_path: true
-                default_target_path: /
-            logout: ~
+            guard:
+                authenticators:
+                    - App\Security\AppUserAuthenticator
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+                secure: true
+                httponly: true
+
+            logout:
+                path: logout
+                target: homepage
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
