@@ -5,11 +5,13 @@ php:
 os: linux
 dist: focal
 
-
 # Git branches
 branches:
   only:
     - /^feature.*$/
+
+services:
+  - mysql
 
 install:
   - composer install
@@ -20,6 +22,9 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
+  # Database
+  - php bin/console doctrine:database:create --env=test
+  - php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
 script: php bin/phpunit --coverage-clover clover.xml
 
