@@ -25,7 +25,7 @@ class SecurityControllerTest extends WebTestCase
                 '_csrf_token' => 'fake'
             ]
         );
-        $this->assertEquals('Invalid CSRF token.', $crawler->filter('div[role="alert"]')->text());
+        $this->assertEquals('Jeton CSRF invalide.', $crawler->filter('div[role="alert"]')->text());
     }
 
     public function testUserNotFound()
