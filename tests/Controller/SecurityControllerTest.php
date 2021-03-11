@@ -2,10 +2,10 @@
 
 namespace App\Tests\Controller;
 
+use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class SecurityControllerTest extends WebTestCase
+class SecurityControllerTest extends AppWebTestCase
 {
     use RefreshDatabaseTrait;
 
