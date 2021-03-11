@@ -51,4 +51,29 @@ class SecurityControllerTest extends AppWebTestCase
         $crawler = $client->submitForm('Se connecter', ['username' => 'TestUsername', 'password' => 'fake']);
         $this->assertEquals('Identifiants invalides.', $crawler->filter('div[role="alert"]')->text());
     }
+
+    public function testUserAuthenticationSuccess()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        $this->createUser('TestUsername', 'password');
+
+        $client->request('GET', '/login');
+
+        $crawler = $client->submitForm('Se connecter', ['username' => 'TestUsername', 'password' => 'password']);
+        $this->assertEquals(1, $crawler->filter('a:contains("Se déconnecter")')->count());
+    }
+
+    /**
+     * A not authenticated user is redirected to the login page.
+     */
+    public function redirectAnonymousToLogin()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/');
+        $this->assertEquals('/login', $crawler->getUri());
+    }
 }
