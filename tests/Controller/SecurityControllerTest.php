@@ -35,7 +35,20 @@ class SecurityControllerTest extends AppWebTestCase
 
         $client->request('GET', '/login');
 
-        $crawler = $client->submitForm('Se connecter', ['username' => 'test', 'password' => 'test',]);
+        $crawler = $client->submitForm('Se connecter', ['username' => 'test', 'password' => 'test']);
         $this->assertEquals('Nom d\'utilisateur introuvable', $crawler->filter('div[role="alert"]')->text());
+    }
+
+    public function testUserBadCredentials()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        $this->createUser('TestUsername', 'password');
+
+        $client->request('GET', '/login');
+
+        $crawler = $client->submitForm('Se connecter', ['username' => 'TestUsername', 'password' => 'fake']);
+        $this->assertEquals('Identifiants invalides.', $crawler->filter('div[role="alert"]')->text());
     }
 }
