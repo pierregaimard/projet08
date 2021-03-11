@@ -17,6 +17,7 @@ exclude_patterns:
   - "public/"
   - "src/Kernel.php"
   - "tests/"
+  - "translations/"
   - "var/"
   - "vendor/"
   - "node_modules/"
