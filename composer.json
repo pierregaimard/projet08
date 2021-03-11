@@ -79,5 +79,8 @@
         },
         "symfony-web-dir": "public"
     },
-    "description": ""
+    "description": "",
+    "require-dev": {
+        "hautelook/alice-bundle": "^2.9"
+    }
 }
