@@ -1,3 +1,5 @@
+version: "2"
+
 plugins:
   phpcodesniffer:
     enabled: true
@@ -10,6 +12,7 @@ plugins:
       file_extensions:
         - php
       rulesets: "cleancode,codesize,controversial,design,unusedcode,phpmd.rulesets.xml"
+      
 exclude_patterns:
   - "bin/"
   - "config/"
