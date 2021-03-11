@@ -28,7 +28,9 @@ class AppWebTestCase extends WebTestCase
         $user = new User();
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@test.fr', $username));
-        $user->setPassword(static::$container->get('security.password_encoder')->encodePassword($user, $password));
+        $user->setPassword(
+            static::$container->get('security.user_password_encoder.generic')->encodePassword($user, $password)
+        );
         $user->setRoles($roles);
 
         $em = $this->getEntityManager();
