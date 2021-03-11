@@ -3,11 +3,11 @@
 namespace App\Tests\Controller;
 
 use App\Test\AppWebTestCase;
-use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
 class SecurityControllerTest extends AppWebTestCase
 {
-    use RefreshDatabaseTrait;
+    use ReloadDatabaseTrait;
 
     public function testCsrfToken()
     {
