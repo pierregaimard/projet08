@@ -15,7 +15,7 @@ services:
 
 install:
   - composer install
-  - php bin/phpunit
+  - php bin/phpunit --group=none
 
 before_script:
   # Prepare code coverage report for CodeClimate
