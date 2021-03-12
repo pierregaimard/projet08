@@ -51,7 +51,7 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Regex(
      *      "/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/",
-     *      message="This password is not safe.",
+     *      message="Ce mot de passe n'est pas assez fort.",
      * )
      */
     private $plainPassword;
