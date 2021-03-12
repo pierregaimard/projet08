@@ -5,6 +5,7 @@ namespace App\Test;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AppWebTestCase extends WebTestCase
 {
@@ -23,10 +24,15 @@ class AppWebTestCase extends WebTestCase
     {
         return static::$container->get('session');
     }
+
+    /**
+     * @param string      $username
+     * @param string      $password
+     * @param string|null $role
      *
      * @return User
      */
-    protected function createUser(string $username, string $password, array $roles = []): User
+    protected function createUser(string $username, string $password, string $role = null): User
     {
         $user = new User();
         $user->setUsername($username);
