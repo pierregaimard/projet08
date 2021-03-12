@@ -47,6 +47,16 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *      "/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/",
+     *      message="This password is not safe.",
+     * )
+     */
+    private $plainPassword;
+
+    /**
      * @ORM\Column(type="string", length=60, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
@@ -107,6 +117,22 @@ class User implements UserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string|null $plainPassword
+     */
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 
     /**
