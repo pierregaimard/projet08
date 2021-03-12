@@ -63,6 +63,11 @@ class User implements UserInterface
      */
     private $email;
 
+    public function __construct()
+    {
+        $this->roles = [self::ROLE_USER];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
