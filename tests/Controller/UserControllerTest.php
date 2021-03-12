@@ -91,7 +91,7 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Ajouter un utilisateurs")')->count());
     }
 
-    public function testUserViolationConstraints()
+    public function testUserCreateViolationConstraints()
     {
         $client = static::createClient();
         $client->followRedirects();
