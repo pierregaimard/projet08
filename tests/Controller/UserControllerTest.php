@@ -136,4 +136,59 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('li:contains("deux mots de passe doivent correspondre.")')->count());
         $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
     }
+
+    public function testUserCreation()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+
+        $client->request('GET', '/users/create');
+
+        $client->submitForm(
+            'Ajouter',
+            [
+                'user[username]' => 'MyGoodUser',
+                'user[plainPassword][first]' => 'MyStrong$Password',
+                'user[plainPassword][second]' => 'MyStrong$Password',
+                'user[email]' => 'good.email@test.test',
+                'user[roles]' => User::ROLE_USER
+            ]
+        );
+
+        $em = $this->getEntityManager();
+        $user = $em->getRepository(User::class)->find(2);
+
+        $this->assertEquals('MyGoodUser', $user->getUsername());
+        $this->assertEquals('good.email@test.test', $user->getEmail());
+        $this->assertEquals([User::ROLE_USER], $user->getRoles());
+    }
+
+    public function testUserEdit()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        $client->request('GET', '/users/2/edit');
+
+        $client->submitForm(
+            'Modifier',
+            [
+                'user[username]' => 'MyGoodUser',
+                'user[plainPassword][first]' => 'MyStrong$Password',
+                'user[plainPassword][second]' => 'MyStrong$Password',
+                'user[email]' => 'new.email@test.test',
+                'user[roles]' => User::ROLE_ADMIN
+            ]
+        );
+
+        $em = $this->getEntityManager();
+        $user = $em->getRepository(User::class)->find(2);
+
+        $this->assertEquals('MyGoodUser', $user->getUsername());
+        $this->assertEquals('new.email@test.test', $user->getEmail());
+        $this->assertEquals([User::ROLE_ADMIN], $user->getRoles());
+    }
 }
