@@ -16,7 +16,12 @@ class UserController extends AbstractController
      */
     public function list()
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository(User::class)->findAll()]);
+        return $this->render(
+            'user/list.html.twig',
+            [
+                'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+            ]
+        );
     }
 
     /**
