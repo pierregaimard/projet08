@@ -65,7 +65,7 @@ class AppWebTestCase extends WebTestCase
 
         $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
         $session = $this->getSession();
-        $session->set('_security_'.$firewallContext, serialize($token));
+        $session->set('_security_' . $firewallContext, serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
