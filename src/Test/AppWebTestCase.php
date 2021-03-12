@@ -4,8 +4,11 @@ namespace App\Test;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AppWebTestCase extends WebTestCase
 {
@@ -47,6 +50,27 @@ class AppWebTestCase extends WebTestCase
         $em = $this->getEntityManager();
         $em->persist($user);
         $em->flush();
+
+        return $user;
+    }
+
+    /**
+     * @param KernelBrowser $client
+     * @param User          $user
+     */
+    protected function logIn(KernelBrowser $client, User $user): void
+    {
+        $firewallName = 'main';
+        $firewallContext = 'main';
+
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $session = $this->getSession();
+        $session->set('_security_'.$firewallContext, serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $client->getCookieJar()->set($cookie);
+    }
 
         return $user;
     }
