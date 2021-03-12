@@ -90,3 +90,27 @@ class UserControllerTest extends AppWebTestCase
         $crawler = $client->request('GET', '/users');
         $this->assertEquals(1, $crawler->filter('a:contains("Ajouter un utilisateurs")')->count());
     }
+
+    public function testUserViolationConstraints()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $client->request('GET', '/users/create');
+
+        $crawler = $client->submitForm(
+            'Ajouter',
+            [
+                'user[username]' => 'aa',
+                'user[plainPassword][first]' => 'badPass',
+                'user[plainPassword][second]' => 'badPass',
+                'user[email]' => 'invalidEmail',
+                'user[roles]' => 'ROLE_USER'
+            ]
+        );
+
+        $this->assertEquals(1, $crawler->filter('li:contains("doit comporter au minimum 3 caractères")')->count());
+        $this->assertEquals(1, $crawler->filter('li:contains("Ce mot de passe n\'est pas assez fort.")')->count());
+        $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
+    }
+}
