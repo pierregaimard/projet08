@@ -17,6 +17,7 @@ class User implements UserInterface
 {
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -27,6 +28,10 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
+     * @Assert\Length(
+     *     min=3, minMessage="Votre nom d'utilisateur doit comporter au minimum {{ limit }} caractères",
+     *     max="25", maxMessage="Votre nom d'utilisateur doit comporter au maximum {{ limit }} caractères"
+     * )
      */
     private $username;
 
