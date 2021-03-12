@@ -72,6 +72,23 @@ class AppWebTestCase extends WebTestCase
         $client->getCookieJar()->set($cookie);
     }
 
+    /**
+     * @param KernelBrowser $client
+     * @param string        $username
+     * @param string        $password
+     * @param string|null   $role
+     *
+     * @return User
+     */
+    protected function createUserAndLogIn(
+        KernelBrowser $client,
+        string $username,
+        string $password,
+        string $role = null
+    ): User {
+        $user = $this->createUser($username, $password, $role);
+        $this->logIn($client, $user);
+
         return $user;
     }
 }
