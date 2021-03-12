@@ -34,5 +34,4 @@ after_script:
   - ./cc-test-reporter after-build -t clover --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
-  slack:
-    secure: "AG+ecvPxwNSEPlT3Vo/gCItGcK6kJ8dQipYBOe0a/FoPzyye+psYwLbA4eQbyQp6GdcCzB/DX5DaiFnY+cMVQwFxMGQ3vL+Q9M42YqEcGyJ/z2yFkCw4d+J8kiRfBTsvyyD2088uPOe9LBI6Vi2UZUaPz1JdOZeGT/gAjjhFF9X69bN0O5ko/vdPTqyeAyaBrCplXKdcFNM9i+/Ue0fWKefS648oQxz1qhNsoailntTqveBH+dkTxDtc3d4cepn+iiGO6MiXpzj8gi+ansBqB1ftLhAvDKQFkyhyrwitKOkjZHax3qfpSXjXqw78zrlnH2sSKY7MsCwCyxSzwZeGiQpWF2gAUbQmcS4QHtvaIdanQLg6V6+oSmZrUJcCTDdRRgUhIpy1dYyJnUdHz1EDnEbvkqOTDrOuof7exrl/lPi/GKSGyJBhmEdHla0h/MCKGn39iRhNEp1KEq5h3PiQu0ATLksGxPJ6YMKYzwwmfKgSj+Eu1M248xUaqk+shuo1G8d3nZHYB87zgQj/DLHAb4Cv01+kpqcCwD+bZDh4DdZ4dpCMudNJcezrN8VCrcRFAAwRkjlap3scq8lmnGS9ELV43KrpS9u+RWvQdyZhABZGThixu+4bH+U3m7qk/2uyZ6xYE+LOHynOLC1wkHhx5BRejRJQ2s5tMuzW75dZIvs="
+  slack: dev-8zu1125:6ftFiNJjIkdaOix43mwCuvKN
