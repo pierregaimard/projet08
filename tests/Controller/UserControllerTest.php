@@ -71,4 +71,22 @@ class UserControllerTest extends AppWebTestCase
         ];
     }
 
-}
+    public function testUsersAdminButtonAccess()
+    {
+        $client = static::createClient();
+
+        # ROLE_USER tests
+        $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        $crawler = $client->request('GET', '/');
+        $this->assertEquals(0, $crawler->filter('a:contains("Liste des utilisateurs")')->count());
+
+        # ROLE_ADMIN tests
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+
+        $crawler = $client->request('GET', '/');
+        $this->assertEquals(1, $crawler->filter('a:contains("Liste des utilisateurs")')->count());
+
+        $crawler = $client->request('GET', '/users');
+        $this->assertEquals(1, $crawler->filter('a:contains("Ajouter un utilisateurs")')->count());
+    }
