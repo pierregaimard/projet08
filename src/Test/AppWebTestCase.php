@@ -40,7 +40,9 @@ class AppWebTestCase extends WebTestCase
         $user->setPassword(
             static::$container->get('security.user_password_encoder.generic')->encodePassword($user, $password)
         );
-        $user->setRoles($roles);
+        if (null !== $role) {
+            $user->setRoles([$role]);
+        }
 
         $em = $this->getEntityManager();
         $em->persist($user);
