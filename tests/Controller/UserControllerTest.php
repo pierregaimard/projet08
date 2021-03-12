@@ -113,4 +113,27 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('li:contains("Ce mot de passe n\'est pas assez fort.")')->count());
         $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
     }
+
+    public function testUserEditViolationConstraints()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+        $client->request('GET', '/users/2/edit');
+
+        $crawler = $client->submitForm(
+            'Modifier',
+            [
+                'user[username]' => 'aa',
+                'user[plainPassword][first]' => 'MyStrong$Password',
+                'user[plainPassword][second]' => 'MyFakePassword',
+                'user[email]' => 'invalidEmail',
+            ]
+        );
+
+        $this->assertEquals(1, $crawler->filter('li:contains("doit comporter au minimum 3 caractères")')->count());
+        $this->assertEquals(1, $crawler->filter('li:contains("deux mots de passe doivent correspondre.")')->count());
+        $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
+    }
 }
