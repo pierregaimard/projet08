@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block nav_admin %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('user_create') }}" class="btn btn-primary">Ajouter un utilisateurs</a>
+    {% endif %}
+{% endblock %}
+
 {% block header_img %}{% endblock %}
 
 {% block header_title %}<h1>Liste des utilisateurs</h1>{% endblock %}
