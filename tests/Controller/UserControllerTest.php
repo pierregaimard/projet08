@@ -43,6 +43,7 @@ class UserControllerTest extends AppWebTestCase
     public function testUserRolePersistance(string $username, string $role)
     {
         $client = static::createClient();
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
         $client->request('GET', '/users/create');
 
         $client->submitForm(
