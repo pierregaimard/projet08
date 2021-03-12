@@ -2,8 +2,10 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends AppWebTestCase
 {
@@ -75,5 +77,18 @@ class SecurityControllerTest extends AppWebTestCase
 
         $crawler = $client->request('GET', '/');
         $this->assertEquals('/login', $crawler->getUri());
+    }
+
+    public function testUserRightAccess()
+    {
+        $client = static::createClient();
+
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $client->request('GET', '/users');
+        $this->assertResponseIsSuccessful();
+
+        $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
+        $client->request('GET', '/users');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 }
