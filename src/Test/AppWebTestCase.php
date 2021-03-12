@@ -17,9 +17,12 @@ class AppWebTestCase extends WebTestCase
     }
 
     /**
-     * @param string          $username
-     * @param string          $password
-     * @param array           $roles
+     * @return SessionInterface
+     */
+    private function getSession(): SessionInterface
+    {
+        return static::$container->get('session');
+    }
      *
      * @return User
      */
