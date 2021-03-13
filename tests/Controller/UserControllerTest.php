@@ -191,4 +191,30 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals('new.email@test.test', $user->getEmail());
         $this->assertEquals([User::ROLE_ADMIN], $user->getRoles());
     }
+
+    public function testDeleteUser()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        # Create users
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        # Goto users list
+        $crawler = $client->request('GET', '/users');
+        $deleteButton = $crawler->filterXPath('//a[contains(text(), "Delete")]')->last()->link();
+
+        # Click on delete button for the second user
+        $crawler = $client->click($deleteButton);
+        # Check if we are in good page and has selected the good user.
+        $this->assertEquals(1, $crawler->filter('h1:contains("TestUser")')->count());
+        $crawler = $client->submitForm('Supprimer');
+
+        # Check if return to homepage
+        $this->assertEquals('Liste des utilisateurs', $crawler->filter('h1')->text());
+        $user = $this->getEntityManager()->getRepository(User::class)->find(2);
+        # Check if user has been deleted
+        $this->assertFalse($user instanceof User);
+    }
 }
