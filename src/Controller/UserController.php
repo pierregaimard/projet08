@@ -8,6 +8,8 @@ use App\Security\UserPasswordManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class UserController extends AbstractController
 {
@@ -67,5 +69,31 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
+    }
+
+    /**
+     * @Route("/users/{id}/delete", name="user_delete")
+     */
+    public function delete(User $user, Request $request, CsrfTokenManagerInterface $tokenManager)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($request->isMethod('POST')) {
+            $token = new CsrfToken('token_delete_user', $request->get('csrf_token'));
+            if (!$tokenManager->isTokenValid($token)) {
+                $this->addFlash('danger', "Jeton CSRF invalide.");
+
+                return $this->redirectToRoute('user_list');
+            }
+
+            $em->remove($user);
+            $em->flush();
+
+            $this->addFlash('success', "L'utilisateur a bien été supprimé");
+
+            return $this->redirectToRoute('user_list');
+        }
+
+        return $this->render('user/delete.html.twig', ['user' => $user]);
     }
 }
