@@ -51,7 +51,7 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Regex(
      *      "/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/",
-     *      message="This password is not safe.",
+     *      message="Ce mot de passe n'est pas assez fort.",
      * )
      */
     private $plainPassword;
@@ -96,6 +96,18 @@ class User implements UserInterface
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    public function getRole(): string
+    {
+        $role = $this->getRoles()[0];
+
+        switch ($role) {
+            case self::ROLE_ADMIN:
+                return 'Administrateur';
+            default:
+                return 'Utilisateur';
+        }
     }
 
     public function setRoles(array $roles): self

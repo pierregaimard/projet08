@@ -20,10 +20,10 @@ class UserPasswordManager
     /**
      * @param User $user
      */
-    public function setUserPassword(User $user): void
+    public function setUserPassword(User $user)
     {
         if (null === $user->getPlainPassword()) {
-            return;
+            return false;
         }
 
         $user->setPassword($this->encoder->encodePassword($user, $user->getPlainPassword()));
