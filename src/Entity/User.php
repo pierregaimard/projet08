@@ -98,6 +98,18 @@ class User implements UserInterface
         return $this->roles;
     }
 
+    public function getRole(): string
+    {
+        $role = $this->getRoles()[0];
+
+        switch ($role) {
+            case self::ROLE_ADMIN:
+                return 'Administrateur';
+            default:
+                return 'Utilisateur';
+        }
+    }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
