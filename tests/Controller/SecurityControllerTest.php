@@ -91,4 +91,18 @@ class SecurityControllerTest extends AppWebTestCase
         $client->request('GET', '/users');
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
+
+    /**
+     * Checks if authenticated user who navigates to login page is redirected automatically to the homepage.
+     */
+    public function testAuthenticatedUserRedirection()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        $crawler = $client->request('GET', '/login');
+        $this->assertEquals(1, $crawler->filter('h1:contains("Bienvenue sur Todo List")')->count());
+    }
 }
