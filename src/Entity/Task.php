@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task
 {
+    public const OWNER_ANONYMOUS = 'Anonyme';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -104,6 +106,10 @@ class Task
 
     public function getOwner(): ?User
     {
+        if (!$this->owner) {
+            return (new User())->setUsername(self::OWNER_ANONYMOUS);
+        }
+
         return $this->owner;
     }
 
