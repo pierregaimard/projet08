@@ -19,7 +19,7 @@ final class TaskControllerTest extends AppWebTestCase
 
         $this->logIn($client, $_em->getRepository(User::class)->findOneBy(['username' => 'Admin']));
         $crawler = $client->request('GET', '/tasks');
-        $this->assertEquals(10, $crawler->filter('div.thumbnail')->count());
+        $this->assertEquals(11, $crawler->filter('div.thumbnail')->count());
     }
 
     public function testTaskCreate()
