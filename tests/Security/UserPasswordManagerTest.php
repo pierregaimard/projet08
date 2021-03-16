@@ -7,7 +7,7 @@ use App\Security\UserPasswordManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserPasswordManagerTest extends TestCase
+final class UserPasswordManagerTest extends TestCase
 {
     public function testSetUserPasswordMethod()
     {
