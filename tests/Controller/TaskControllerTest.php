@@ -52,4 +52,35 @@ final class TaskControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('li:contains("Vous devez saisir un titre.")')->count());
         $this->assertEquals(1, $crawler->filter('li:contains("Vous devez saisir du contenu.")')->count());
     }
+
+    public function testTaskEdit()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        $_em = $this->getEntityManager();
+        $user = $_em->getRepository(User::class)->findOneBy(['username' => 'Admin']);
+        $this->logIn($client, $user);
+
+        $crawler = $client->request('GET', '/tasks');
+        $client->click($crawler->filterXPath('//a[@href="/tasks/1/edit"]')->link());
+
+        $crawler = $client->submitForm(
+            'Modifier',
+            ['task[title]' => 'My New Title', 'task[content]' => 'My new content'],
+        );
+
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(1);
+
+        # User has been redirected to task list
+        $this->assertEquals(
+            1,
+            $crawler->filter('div.alert-success:contains("La tâche a bien été modifiée.")')->count()
+        );
+        # Task content has been updated
+        $this->assertEquals('My New Title', $task->getTitle());
+        $this->assertEquals('My new content', $task->getContent());
+        # Task owner has not changed
+        $this->assertFalse($task->getOwner()->getId() === $user->getId());
+    }
 }
