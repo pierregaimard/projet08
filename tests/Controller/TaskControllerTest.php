@@ -83,4 +83,32 @@ final class TaskControllerTest extends AppWebTestCase
         # Task owner has not changed
         $this->assertFalse($task->getOwner()->getId() === $user->getId());
     }
+
+    public function testToggleTask()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        $_em = $this->getEntityManager();
+        $user = $_em->getRepository(User::class)->findOneBy(['username' => 'User']);
+        $this->logIn($client, $user);
+
+        $crawler = $client->request('GET', '/tasks');
+        $form = $crawler->filter('form[action="/tasks/1/toggle"]')->form();
+
+        # First time task isDone = true
+        $crawler = $client->submit($form);
+        $this->assertEquals(1, $crawler->filter('div.alert-success:contains("marquée comme faite.")')->count());
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(1);
+        $this->assertTrue($task->isDone());
+
+        $crawler = $client->request('GET', '/tasks');
+        $form = $crawler->filter('form[action="/tasks/1/toggle"]')->form();
+
+        # First time task isDone = false
+        $crawler = $client->submit($form);
+        $this->assertEquals(1, $crawler->filter('div.alert-success:contains("comme non terminée.")')->count());
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(1);
+        $this->assertFalse($task->isDone());
+    }
 }
