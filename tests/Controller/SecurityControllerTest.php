@@ -7,13 +7,13 @@ use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
-class SecurityControllerTest extends AppWebTestCase
+final class SecurityControllerTest extends AppWebTestCase
 {
     use ReloadDatabaseTrait;
 
     public function testCsrfToken()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         $crawler = $client->request('GET', '/login');
@@ -32,7 +32,7 @@ class SecurityControllerTest extends AppWebTestCase
 
     public function testUserNotFound()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         $client->request('GET', '/login');
@@ -43,7 +43,7 @@ class SecurityControllerTest extends AppWebTestCase
 
     public function testUserBadCredentials()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         $this->createUser('TestUsername', 'password');
@@ -56,7 +56,7 @@ class SecurityControllerTest extends AppWebTestCase
 
     public function testUserAuthenticationSuccess()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         $this->createUser('TestUsername', 'password');
@@ -81,7 +81,7 @@ class SecurityControllerTest extends AppWebTestCase
 
     public function testUserRightAccess()
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
         $client->request('GET', '/users');
@@ -97,18 +97,18 @@ class SecurityControllerTest extends AppWebTestCase
      */
     public function testAuthenticatedUserRedirection()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
 
         $crawler = $client->request('GET', '/login');
-        $this->assertEquals(1, $crawler->filter('h1:contains("Bienvenue sur Todo List")')->count());
+        $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text());
     }
 
     public function testUserLogout()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);

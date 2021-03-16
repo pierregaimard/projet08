@@ -39,8 +39,8 @@ final class TaskControllerTest extends AppWebTestCase
         );
 
         # Task is successfully persisted
-        $this->assertEquals(
-            1, $crawler->filter('div.alert-success:contains("La tâche a été bien été ajoutée.")')->count()
+        $this->assertStringContainsString(
+            'La tâche a été bien été ajoutée.', $crawler->filter('div.alert-success')->text(null, false)
         );
         $task = $_em->getRepository(Task::class)->findOneBy(['title' => 'myTask']);
         # Task owner is authenticated user
