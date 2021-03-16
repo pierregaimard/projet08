@@ -21,4 +21,15 @@ final class TaskTest extends TestCase
         # If owner is set, this one is returned.
         $this->assertEquals('TaskOwner', $task->getOwner()->getUsername());
     }
+
+    public function testTaskInitValues()
+    {
+        $task = new Task();
+
+        $date = $task->getCreatedAt()->format('y-m-d h:i:s');
+        $now = (new \DateTime())->format('y-m-d h:i:s');
+
+        $this->assertFalse($task->isDone());
+        $this->assertEquals($now, $date);
+    }
 }
