@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 final class TaskControllerTest extends AppWebTestCase
 {
@@ -110,5 +111,65 @@ final class TaskControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('div.alert-success:contains("comme non terminée.")')->count());
         $task = $this->getEntityManager()->getRepository(Task::class)->find(1);
         $this->assertFalse($task->isDone());
+    }
+
+    public function testDeleteOwnedTask()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        $_em = $this->getEntityManager();
+        $user = $_em->getRepository(User::class)->findOneBy(['username' => 'User']);
+        $this->logIn($client, $user);
+
+        $crawler = $client->request('GET', '/tasks');
+        $form = $crawler->filter('form[action="/tasks/1/delete"]')->form();
+        $crawler = $client->submit($form);
+
+        # Task can be deleted by the owner
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(1);
+        $this->assertFalse($task instanceof Task);
+        $this->assertEquals(1, $crawler->filter('div.alert-success:contains("bien été supprimée.")')->count());
+
+        $crawler = $client->request('GET', '/tasks');
+        # Delete button is not present when authenticated user is not the owner of the task
+        $this->assertEquals(0, $crawler->filter('form[action="/tasks/6/delete"]')->count());
+
+        $client->request('POST', '/tasks/6/delete');
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(2);
+        # A user can't delete task if he is not the owner.
+        $this->assertTrue($task instanceof Task);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testDeleteTaskWithoutOwner()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        $_em = $this->getEntityManager();
+        $user = $_em->getRepository(User::class)->findOneBy(['username' => 'User']);
+        $this->logIn($client, $user);
+
+        $crawler = $client->request('GET', '/tasks');
+        $this->assertEquals(0, $crawler->filter('form[action="/tasks/2/delete"]')->count());
+
+        $client->request('POST', '/tasks/2/delete');
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(2);
+        # A user with ROLE_USER can't delete task without owner
+        $this->assertTrue($task instanceof Task);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $admin = $_em->getRepository(User::class)->findOneBy(['username' => 'Admin']);
+        $this->logIn($client, $admin);
+
+        $crawler = $client->request('GET', '/tasks');
+        $form = $crawler->filter('form[action="/tasks/2/delete"]')->form();
+        $crawler = $client->submit($form);
+
+        # Task can be deleted by the owner
+        $task = $this->getEntityManager()->getRepository(Task::class)->find(2);
+        $this->assertFalse($task instanceof Task);
+        $this->assertEquals(1, $crawler->filter('div.alert-success:contains("bien été supprimée.")')->count());
     }
 }
