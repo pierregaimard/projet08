@@ -6,13 +6,13 @@ use App\Entity\User;
 use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-class DefaultControllerTest extends AppWebTestCase
+final class DefaultControllerTest extends AppWebTestCase
 {
     use ReloadDatabaseTrait;
 
     public function testHomepage()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
         $crawler = $client->request('GET', '/');
 
