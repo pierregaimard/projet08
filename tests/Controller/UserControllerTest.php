@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-class UserControllerTest extends AppWebTestCase
+final class UserControllerTest extends AppWebTestCase
 {
     use ReloadDatabaseTrait;
 
@@ -19,7 +19,7 @@ class UserControllerTest extends AppWebTestCase
      */
     public function testUserRoleChoiceInCreateForm(string $url)
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $this->createUserAndLogIn($client, 'MyUser', 'MyStrong$Password', User::ROLE_ADMIN);
 
@@ -39,10 +39,13 @@ class UserControllerTest extends AppWebTestCase
 
     /**
      * @dataProvider usersProvider
+     *
+     * @param string $username
+     * @param string $role
      */
     public function testUserRolePersistance(string $username, string $role)
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
         $client->request('GET', '/users/create');
 
@@ -73,7 +76,7 @@ class UserControllerTest extends AppWebTestCase
 
     public function testUserList()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $this->createUserAndLogIn($client, 'AdminUser', 'MyStrong$Password', User::ROLE_ADMIN);
 
         $crawler = $client->request('GET', '/users');
@@ -82,7 +85,7 @@ class UserControllerTest extends AppWebTestCase
 
     public function testUsersAdminButtonAccess()
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         # ROLE_USER tests
         $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
@@ -100,9 +103,9 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Ajouter un utilisateurs")')->count());
     }
 
-    public function testUserCreateViolationConstraints()
+    public function testUserCreationViolationConstraints()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
         $client->request('GET', '/users/create');
@@ -123,9 +126,9 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
     }
 
-    public function testUserEditViolationConstraints()
+    public function testUserEditionViolationConstraints()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
         $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
@@ -148,7 +151,7 @@ class UserControllerTest extends AppWebTestCase
 
     public function testUserCreation()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
 
@@ -173,9 +176,9 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals([User::ROLE_USER], $user->getRoles());
     }
 
-    public function testUserEdit()
+    public function testUserEdition()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
         $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
@@ -201,9 +204,9 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals([User::ROLE_ADMIN], $user->getRoles());
     }
 
-    public function testDeleteUser()
+    public function testUserDeletion()
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->followRedirects();
 
         # Create users
