@@ -4,11 +4,11 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use App\Test\AppWebTestCase;
-use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
 class UserControllerTest extends AppWebTestCase
 {
-    use RecreateDatabaseTrait;
+    use ReloadDatabaseTrait;
 
     /**
      * Check if user role choice is present in user create form.
@@ -69,6 +69,15 @@ class UserControllerTest extends AppWebTestCase
             'Simple user' => ['SimpleUser', User::ROLE_USER],
             'Admin user' => ['AdminUser', User::ROLE_ADMIN],
         ];
+    }
+
+    public function testUserList()
+    {
+        $client = static::createClient();
+        $this->createUserAndLogIn($client, 'AdminUser', 'MyStrong$Password', User::ROLE_ADMIN);
+
+        $crawler = $client->request('GET', '/users');
+        $this->assertEquals(11, $crawler->filter('tbody tr')->count());
     }
 
     public function testUsersAdminButtonAccess()
