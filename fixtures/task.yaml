@@ -9,4 +9,4 @@ App\Entity\Task:
     task_{1..8}:
         title: <word()>
         content: <paragraph()>
-        owner: '@user_*'
+        owner: '@user_<numberBetween(1, 8)>'
