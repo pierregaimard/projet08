@@ -21,4 +21,14 @@ class UserTest extends TestCase
         $this->assertEquals([User::ROLE_ADMIN], $user->getRoles());
         $this->assertEquals('Administrateur', $user->getRole());
     }
+
+    public function testEraseCredentials()
+    {
+        $user = new User();
+
+        $user->setPlainPassword('MyFavoritePassword');
+        $user->eraseCredentials();
+
+        $this->assertNull($user->getPlainPassword());
+    }
 }
