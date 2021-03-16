@@ -105,4 +105,20 @@ class SecurityControllerTest extends AppWebTestCase
         $crawler = $client->request('GET', '/login');
         $this->assertEquals(1, $crawler->filter('h1:contains("Bienvenue sur Todo List")')->count());
     }
+
+    public function testUserLogout()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
+        $crawler = $client->request('GET', '/logout');
+
+        # User is redirected to the login page
+        $this->assertEquals(1, $crawler->filter('button:contains("Se connecter")')->count());
+
+        $crawler = $client->request('GET', '/');
+        # User is redirected to the login page
+        $this->assertEquals(1, $crawler->filter('button:contains("Se connecter")')->count());
+    }
 }
