@@ -2,17 +2,21 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Entity\User;
+use App\Test\AppWebTestCase;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends AppWebTestCase
 {
-    public function testIndex()
+    use ReloadDatabaseTrait;
+
+    public function testHomepage()
     {
         $client = static::createClient();
-
-        $crawler = $client->request('GET', '/login');
+        $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
+        $crawler = $client->request('GET', '/');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        #$this->assertStringContainsString('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text());
     }
 }
