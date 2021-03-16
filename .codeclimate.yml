@@ -18,6 +18,7 @@ exclude_patterns:
   - "config/"
   - "migrations/"
   - "public/"
+  - "src/DataFixtures"
   - "src/Kernel.php"
   - "tests/"
   - "translations/"

@@ -4,11 +4,11 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use App\Test\AppWebTestCase;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 
 class UserControllerTest extends AppWebTestCase
 {
-    use ReloadDatabaseTrait;
+    use RecreateDatabaseTrait;
 
     /**
      * Check if user role choice is present in user create form.
@@ -157,9 +157,9 @@ class UserControllerTest extends AppWebTestCase
         );
 
         $em = $this->getEntityManager();
-        $user = $em->getRepository(User::class)->find(2);
+        $user = $em->getRepository(User::class)->findOneBy(['username' => 'MyGoodUser']);
 
-        $this->assertEquals('MyGoodUser', $user->getUsername());
+        $this->assertTrue($user instanceof User);
         $this->assertEquals('good.email@test.test', $user->getEmail());
         $this->assertEquals([User::ROLE_USER], $user->getRoles());
     }
@@ -213,7 +213,7 @@ class UserControllerTest extends AppWebTestCase
 
         # Check if return to homepage
         $this->assertEquals('Liste des utilisateurs', $crawler->filter('h1')->text());
-        $user = $this->getEntityManager()->getRepository(User::class)->find(2);
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'TestUser']);
         # Check if user has been deleted
         $this->assertFalse($user instanceof User);
     }

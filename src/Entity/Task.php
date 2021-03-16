@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task
 {
+    public const OWNER_ANONYMOUS = 'Anonyme';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -40,6 +42,11 @@ class Task
      */
     private $isDone;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->createdAt = new \Datetime();
@@ -68,7 +75,7 @@ class Task
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -80,7 +87,7 @@ class Task
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
@@ -95,5 +102,21 @@ class Task
     public function toggle($flag)
     {
         $this->isDone = $flag;
+    }
+
+    public function getOwner(): ?User
+    {
+        if (!$this->owner) {
+            return (new User())->setUsername(self::OWNER_ANONYMOUS);
+        }
+
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }

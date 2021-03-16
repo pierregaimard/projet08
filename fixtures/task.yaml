@@ -1,0 +1,12 @@
+App\Entity\Task:
+    user_task:
+        title: <word()>
+        content: <paragraph()>
+        owner: '@user'
+    anonymous_task:
+        title: 'Anonymous'
+        content: <paragraph()>
+    task_{1..8}:
+        title: <word()>
+        content: <paragraph()>
+        owner: '@user_*'
