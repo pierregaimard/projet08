@@ -1,9 +1,4 @@
 App\Entity\User:
-    user_{1..10}:
-        username: <username()>
-        password: 'MySecure\$Password'
-        email: <email()>
-        roles: [ 'ROLE_USER' ]
     admin:
         username: 'Admin'
         password: 'MySecure\$Password'
@@ -13,5 +8,9 @@ App\Entity\User:
         username: 'User'
         password: 'MySecure\$Password'
         email: 'user@todo-co.com'
-        roles: [ 'ROLE_USER' ]
-
+        roles: ['ROLE_USER']
+    user_{1..8}:
+        username: <username()>
+        password: 'MySecure\$Password'
+        email: <email()>
+        roles: ['ROLE_USER']
