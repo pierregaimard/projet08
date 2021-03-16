@@ -4,11 +4,11 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use App\Test\AppWebTestCase;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 
 class UserControllerTest extends AppWebTestCase
 {
-    use ReloadDatabaseTrait;
+    use RecreateDatabaseTrait;
 
     /**
      * Check if user role choice is present in user create form.
