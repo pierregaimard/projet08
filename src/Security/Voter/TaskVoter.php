@@ -42,11 +42,10 @@ class TaskVoter extends Voter
 
         switch ($attribute) {
             case self::DELETE:
-                if (null === $subject->getOwner()->getId() && $this->security->isGranted('ROLE_ADMIN')) {
-                    return true;
-                }
-
-                if ($user->getId() === $subject->getOwner()->getId()) {
+                if (
+                    (null === $subject->getOwner()->getId() && $this->security->isGranted('ROLE_ADMIN')) ||
+                    $user->getId() === $subject->getOwner()->getId()
+                ) {
                     return true;
                 }
 
