@@ -103,7 +103,7 @@ final class SecurityControllerTest extends AppWebTestCase
         $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
 
         $crawler = $client->request('GET', '/login');
-        $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text());
+        $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text(null, false));
     }
 
     public function testUserLogout()

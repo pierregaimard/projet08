@@ -97,10 +97,10 @@ final class UserControllerTest extends AppWebTestCase
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
 
         $crawler = $client->request('GET', '/');
-        $this->assertEquals(1, $crawler->filter('a:contains("Liste des utilisateurs")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Utilisateurs")')->count());
 
         $crawler = $client->request('GET', '/users');
-        $this->assertEquals(1, $crawler->filter('a:contains("Ajouter un utilisateurs")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Ajouter un utilisateur")')->count());
     }
 
     public function testUserCreationViolationConstraints()
@@ -121,9 +121,18 @@ final class UserControllerTest extends AppWebTestCase
             ]
         );
 
-        $this->assertEquals(1, $crawler->filter('li:contains("doit comporter au minimum 3 caractères")')->count());
-        $this->assertEquals(1, $crawler->filter('li:contains("Ce mot de passe n\'est pas assez fort.")')->count());
-        $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("doit comporter au minimum 3 caractères")')->count()
+        );
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("Ce mot de passe n\'est pas assez fort.")')->count()
+        );
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("format de l\'adresse n\'est pas correcte.")')->count()
+        );
     }
 
     public function testUserEditionViolationConstraints()
@@ -144,9 +153,18 @@ final class UserControllerTest extends AppWebTestCase
             ]
         );
 
-        $this->assertEquals(1, $crawler->filter('li:contains("doit comporter au minimum 3 caractères")')->count());
-        $this->assertEquals(1, $crawler->filter('li:contains("deux mots de passe doivent correspondre.")')->count());
-        $this->assertEquals(1, $crawler->filter('li:contains("format de l\'adresse n\'est pas correcte.")')->count());
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("doit comporter au minimum 3 caractères")')->count()
+        );
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("deux mots de passe doivent correspondre.")')->count()
+        );
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("format de l\'adresse n\'est pas correcte.")')->count()
+        );
     }
 
     public function testUserCreation()
