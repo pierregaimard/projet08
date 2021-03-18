@@ -19,8 +19,8 @@ final class TaskControllerTest extends AppWebTestCase
         $_em = $this->getEntityManager();
 
         $this->logIn($client, $_em->getRepository(User::class)->findOneBy(['username' => 'Admin']));
-        $crawler = $client->request('GET', '/tasks');
-        $this->assertEquals(10, $crawler->filter('div.thumbnail')->count());
+        $crawler = $client->request('GET', '/tasks/todo');
+        $this->assertEquals(10, $crawler->filter('div.card')->count());
     }
 
     public function testTaskCreate()
@@ -50,8 +50,14 @@ final class TaskControllerTest extends AppWebTestCase
         $crawler = $client->submitForm('Ajouter');
 
         # Empty form returns constraints violations
-        $this->assertEquals(1, $crawler->filter('li:contains("Vous devez saisir un titre.")')->count());
-        $this->assertEquals(1, $crawler->filter('li:contains("Vous devez saisir du contenu.")')->count());
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("Vous devez saisir un titre.")')->count()
+        );
+        $this->assertEquals(
+            1,
+            $crawler->filter('span.form-error-message:contains("Vous devez saisir du contenu.")')->count()
+        );
     }
 
     public function testTaskEdit()
@@ -63,7 +69,7 @@ final class TaskControllerTest extends AppWebTestCase
         $user = $_em->getRepository(User::class)->findOneBy(['username' => 'Admin']);
         $this->logIn($client, $user);
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/todo');
         $client->click($crawler->filterXPath('//a[@href="/tasks/1/edit"]')->link());
 
         $crawler = $client->submitForm(
@@ -94,7 +100,7 @@ final class TaskControllerTest extends AppWebTestCase
         $user = $_em->getRepository(User::class)->findOneBy(['username' => 'User']);
         $this->logIn($client, $user);
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/todo');
         $form = $crawler->filter('form[action="/tasks/1/toggle"]')->form();
 
         # First time task isDone = true
@@ -103,7 +109,7 @@ final class TaskControllerTest extends AppWebTestCase
         $task = $this->getEntityManager()->getRepository(Task::class)->find(1);
         $this->assertTrue($task->isDone());
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/done');
         $form = $crawler->filter('form[action="/tasks/1/toggle"]')->form();
 
         # First time task isDone = false
@@ -122,7 +128,7 @@ final class TaskControllerTest extends AppWebTestCase
         $user = $_em->getRepository(User::class)->findOneBy(['username' => 'User']);
         $this->logIn($client, $user);
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/todo');
         $form = $crawler->filter('form[action="/tasks/1/delete"]')->form();
         $crawler = $client->submit($form);
 
@@ -131,7 +137,7 @@ final class TaskControllerTest extends AppWebTestCase
         $this->assertFalse($task instanceof Task);
         $this->assertEquals(1, $crawler->filter('div.alert-success:contains("bien été supprimée.")')->count());
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/todo');
         # Delete button is not present when authenticated user is not the owner of the task
         $this->assertEquals(0, $crawler->filter('form[action="/tasks/6/delete"]')->count());
 
@@ -151,7 +157,7 @@ final class TaskControllerTest extends AppWebTestCase
         $user = $_em->getRepository(User::class)->findOneBy(['username' => 'User']);
         $this->logIn($client, $user);
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/todo');
         $this->assertEquals(0, $crawler->filter('form[action="/tasks/2/delete"]')->count());
 
         $client->request('POST', '/tasks/2/delete');
@@ -163,7 +169,7 @@ final class TaskControllerTest extends AppWebTestCase
         $admin = $_em->getRepository(User::class)->findOneBy(['username' => 'Admin']);
         $this->logIn($client, $admin);
 
-        $crawler = $client->request('GET', '/tasks');
+        $crawler = $client->request('GET', '/tasks/todo');
         $form = $crawler->filter('form[action="/tasks/2/delete"]')->form();
         $crawler = $client->submit($form);
 
