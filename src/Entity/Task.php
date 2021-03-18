@@ -11,6 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task
 {
+    # For task list route {type} argument
+    public const TODO = 'todo';
+    public const DONE = 'done';
+
     public const OWNER_ANONYMOUS = 'Anonyme';
 
     /**
