@@ -1,13 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="row">
-        {{ form_start(form, {'action' : path('task_create'), 'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(form) }}
+    {{ form_start(form, {'action' : path('task_create'), 'attr': {'novalidate': 'novalidate'}}) }}
 
-            <button type="submit" class="btn btn-success pull-right">Ajouter</button>
-        {{ form_end(form) }}
+        <!-- Fields -->
+        {{ form_widget(form) }}
 
-        <a href="{{ path('task_list') }}" class="btn btn-primary">Retour à la liste des tâches</a>
-    </div>
+        <!-- Buttons -->
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="form-control btn btn-success px-5">Ajouter</button>
+            </div>
+
+            <div class="col">
+                <a href="{{ path('task_list', {'type': 'todo'}) }}" class="form-control btn btn-outline-secondary">
+                    Annuler
+                </a>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
 {% endblock %}

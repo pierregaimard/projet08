@@ -5,14 +5,21 @@
         <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form method="post">
+    <form method="post" novalidate="novalidate">
         {# Username #}
-        <label for="inputUsername">Nom d'utilisateur :</label>
-        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
+        <div class="form-group">
+            <label for="inputUsername">Nom d'utilisateur :</label>
+            <input
+                type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control"
+                required autofocus
+            >
+        </div>
 
         {# Password #}
-        <label for="inputPassword">Mot de passe :</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" required>
+        <div class="form-group">
+            <label for="inputPassword">Mot de passe :</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" required>
+        </div>
 
         {# Token #}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_token_auth') }}">
