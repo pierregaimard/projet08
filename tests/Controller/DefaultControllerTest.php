@@ -19,4 +19,27 @@ final class DefaultControllerTest extends AppWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text(null, false));
     }
+
+    /**
+     * @dataProvider urlProvider
+     *
+     * @param string $url
+     */
+    public function testHomepageLinks(string $url)
+    {
+        $client = self::createClient();
+        $this->createUserAndLogIn($client, 'TestUser', 'MyStrong$Password', User::ROLE_USER);
+        $client->request('GET', $url);
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    public function urlProvider()
+    {
+        return [
+            ['/tasks/create'],
+            ['/tasks/todo'],
+            ['/tasks/done']
+        ];
+    }
 }
