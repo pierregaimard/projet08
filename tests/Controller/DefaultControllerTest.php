@@ -17,6 +17,6 @@ final class DefaultControllerTest extends AppWebTestCase
         $crawler = $client->request('GET', '/');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text());
+        $this->assertStringContainsString('Bienvenue sur Todo List', $crawler->filter('h1')->text(null, false));
     }
 }
