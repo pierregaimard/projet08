@@ -1,16 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block header_title %}
-    <h1>Etes-vous sure de vouloir supprimer l'utilisateur <strong>{{ user.username }}</strong> ?</h1>
+    <h1 class="mt-5 text-center">
+        Etes-vous sure de vouloir supprimer l'utilisateur <strong>{{ user.username }}</strong> ?
+    </h1>
 {% endblock %}
-{% block header_img %}{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <form action="{{ path('user_delete', {'id': user.id}) }}" method="post">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token('token_delete_user') }}">
-            <a href="{{ path('user_list') }}" class="btn btn-secondary">Annuler</a>
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-        </form>
-    </div>
+    <form action="{{ path('user_delete', {'id': user.id}) }}" method="post" class="text-center my-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token('token_delete_user') }}">
+
+        <a href="{{ path('user_list') }}" class="btn btn-outline-secondary">Annuler</a>
+
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+    </form>
 {% endblock %}
