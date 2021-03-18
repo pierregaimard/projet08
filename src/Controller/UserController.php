@@ -21,7 +21,8 @@ class UserController extends AbstractController
         return $this->render(
             'user/list.html.twig',
             [
-                'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+                'users' => $this->getDoctrine()->getRepository(User::class)->findAll(),
+                'navUser' => true
             ]
         );
     }
