@@ -23,7 +23,7 @@ class TaskRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('t')
             ->addSelect('u')
-            ->innerJoin('t.owner', 'u')
+            ->leftJoin('t.owner', 'u')
             ->andWhere('t.isDone = :isDone')
             ->setParameter('isDone', $isDone)
             ->orderBy('t.createdAt', 'DESC')
