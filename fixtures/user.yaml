@@ -1,12 +1,12 @@
 App\Entity\User:
     admin:
         username: 'Admin'
-        password: 'MySecure\$Password'
+        password: 'pass'
         email: 'admin@todo-co.com'
         roles: ['ROLE_ADMIN']
     user:
         username: 'User'
-        password: 'MySecure\$Password'
+        password: 'pass'
         email: 'user@todo-co.com'
         roles: ['ROLE_USER']
     user_{1..8}:
