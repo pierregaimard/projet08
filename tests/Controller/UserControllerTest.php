@@ -233,7 +233,7 @@ final class UserControllerTest extends AppWebTestCase
 
         # Goto users list
         $crawler = $client->request('GET', '/users');
-        $deleteButton = $crawler->filterXPath('//a[contains(text(), "Delete")]')->last()->link();
+        $deleteButton = $crawler->filterXPath('//a[contains(text(), "Supprimer")]')->last()->link();
 
         # Click on delete button for the second user
         $crawler = $client->click($deleteButton);
