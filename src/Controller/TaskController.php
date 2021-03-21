@@ -24,7 +24,7 @@ class TaskController extends AbstractController
         return $this->render(
             'task/list.html.twig',
             [
-                'tasks' => $taskRepository->findBy(['isDone' => $isDone], ['createdAt' => 'DESC']),
+                'tasks' => $taskRepository->findByStatusWithOwner($isDone),
                 'hasTask' => $hasTask,
                 'listType' => $type,
                 $navName => true,
