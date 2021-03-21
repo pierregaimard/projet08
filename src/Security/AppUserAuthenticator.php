@@ -83,7 +83,11 @@ class AppUserAuthenticator extends AbstractFormLoginAuthenticator implements Pas
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+            throw new CustomUserMessageAuthenticationException('Mot de passe incorrect.');
+        }
+
+        return true;
     }
 
     /**
