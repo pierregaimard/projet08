@@ -68,7 +68,7 @@ class AppUserAuthenticator extends AbstractFormLoginAuthenticator implements Pas
     {
         $token = new CsrfToken('app_token_auth', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new CustomUserMessageAuthenticationException('Jeton CSRF invalide.');
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
@@ -84,7 +84,7 @@ class AppUserAuthenticator extends AbstractFormLoginAuthenticator implements Pas
     public function checkCredentials($credentials, UserInterface $user)
     {
         if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
-            throw new CustomUserMessageAuthenticationException('Mot de passe incorrect.');
+            throw new CustomUserMessageAuthenticationException('Identifiants invalides.');
         }
 
         return true;
