@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Test\AppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-final class DefaultControllerTest extends AppWebTestCase
+final class HomeControllerTest extends AppWebTestCase
 {
     use ReloadDatabaseTrait;
 
