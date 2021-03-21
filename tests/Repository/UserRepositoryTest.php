@@ -3,10 +3,10 @@
 namespace App\Tests\Repository;
 
 use App\Entity\User;
-use App\Test\AppWebTestCase;
+use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-final class UserRepositoryTest extends AppWebTestCase
+final class UserRepositoryTest extends AbstractAppWebTestCase
 {
     use ReloadDatabaseTrait;
 

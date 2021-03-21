@@ -2,10 +2,10 @@
 
 namespace App\Tests\Error;
 
-use App\Test\AppWebTestCase;
+use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
-final class ErrorPagesTest extends AppWebTestCase
+final class ErrorPagesTest extends AbstractAppWebTestCase
 {
     use RefreshDatabaseTrait;
 

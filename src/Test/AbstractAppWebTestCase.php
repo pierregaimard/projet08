@@ -10,7 +10,7 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class AppWebTestCase extends WebTestCase
+abstract class AbstractAppWebTestCase extends WebTestCase
 {
     /**
      * @return EntityManagerInterface
@@ -43,6 +43,7 @@ class AppWebTestCase extends WebTestCase
         $user->setPassword(
             static::$container->get('security.user_password_encoder.generic')->encodePassword($user, $password)
         );
+
         if (null !== $role) {
             $user->setRoles([$role]);
         }

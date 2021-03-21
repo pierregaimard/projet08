@@ -3,11 +3,11 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
-use App\Test\AppWebTestCase;
+use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
-final class SecurityControllerTest extends AppWebTestCase
+final class SecurityControllerTest extends AbstractAppWebTestCase
 {
     use ReloadDatabaseTrait;
 
