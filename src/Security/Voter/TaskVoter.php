@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -42,14 +43,20 @@ class TaskVoter extends Voter
 
         switch ($attribute) {
             case self::DELETE:
-                if (
-                    (null === $subject->getOwner()->getId() && $this->security->isGranted('ROLE_ADMIN')) ||
-                    $user->getId() === $subject->getOwner()->getId()
-                ) {
-                    return true;
-                }
+                return $this->canDelete($subject, $user);
+        }
 
-                break;
+        return false;
+    }
+
+    private function canDelete(Task $subject, User $user)
+    {
+        if (null === $subject->getOwner()->getId() && $this->security->isGranted('ROLE_ADMIN')) {
+            return true;
+        }
+
+        if ($user->getId() === $subject->getOwner()->getId()) {
+            return true;
         }
 
         return false;
