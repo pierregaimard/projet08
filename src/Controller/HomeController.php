@@ -12,6 +12,6 @@ class HomeController extends AbstractController
      */
     public function homepage()
     {
-        return $this->render('home/index.html.twig', ['navHome' => true]);
+        return $this->render('home/homepage.html.twig', ['navHome' => true]);
     }
 }
