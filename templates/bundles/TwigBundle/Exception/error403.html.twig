@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center mb-4">
+        Désolé mais vous n'êtes pas autorisé à accéder à cette page.
+    </h1>
+
+    <p class="text-center mb-4">
+        Si cela devrait être le cas, <br />
+        merci de vous adresser à un administrateur de l'application
+        afin qu'il élève vos privilèges.
+    </p>
+
+    <p class="text-center">
+        <a href="{{ path('homepage') }}" class="btn btn-warning">Retourner à la page d'accueil</a>
+    </p>
+{% endblock %}

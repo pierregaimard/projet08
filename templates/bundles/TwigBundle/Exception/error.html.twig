@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center mb-4">
+        Oups!
+    </h1>
+
+    <p class="text-center mb-4">
+        Il semble que quelque chose se soit mal passé. <br />
+        Si vous rencontrez à nouveau le problème n'hésitez pas à
+        nous contacter, nous sommes là pour ça !.
+    </p>
+
+    <p class="text-center">
+        <a href="{{ path('homepage') }}" class="btn btn-warning">Retourner à la page d'accueil</a>
+    </p>
+{% endblock %}
