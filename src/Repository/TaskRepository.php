@@ -19,6 +19,18 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
+    public function findByStatusWithOwner(bool $isDone)
+    {
+        return $this->createQueryBuilder('t')
+            ->addSelect('u')
+            ->innerJoin('t.owner', 'u')
+            ->andWhere('t.isDone = :isDone')
+            ->setParameter('isDone', $isDone)
+            ->orderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Task[] Returns an array of Task objects
     //  */
