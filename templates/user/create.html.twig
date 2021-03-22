@@ -1,18 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block header_title %}<h1>Créer un utilisateur</h1>{% endblock %}
+{% block header_title %}
+    <h1>
+        Créer un utilisateur
+    </h1>
+{% endblock %}
 
-{% block header_img %}{% endblock %}
+{% block header_img %}
+{% endblock %}
 
 {% block body %}
-    {{ form_start(form, {'action' : path('user_create'), 'attr': {'novalidate': 'novalidate'}}) }}
+    {{
+        form_start(form,{
+            'action' : path('user_create'),
+            'attr': {'novalidate': 'novalidate'}
+        })
+    }}
 
-        <!-- Fields -->
+        {# Fields #}
         {{ form_widget(form) }}
 
-        <!-- Buttons -->
-        <button type="submit" class="btn btn-success pull-right">Ajouter</button>
-        <a href="{{ path('user_list') }}" class="btn btn-outline-secondary">Annuler</a>
+        {# Buttons #}
+        <button
+            type="submit"
+            class="btn btn-success pull-right">
+            Ajouter
+        </button>
+
+        <a
+            href="{{ path('user_list') }}"
+            class="btn btn-outline-secondary">
+            Annuler
+        </a>
 
     {{ form_end(form) }}
 {% endblock %}

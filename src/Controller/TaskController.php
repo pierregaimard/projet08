@@ -18,16 +18,20 @@ class TaskController extends AbstractController
     public function list(string $type, TaskRepository $taskRepository)
     {
         $isDone = ($type === Task::TODO) ? false : true;
+
+        # Used to display empty alert message in the template if no task has been created in the app.
         $hasTask = count($taskRepository->findAll()) > 0;
-        $navName = ($type === Task::TODO) ? 'navTodo' : 'navDone';
+
+        # Used to determine what navbar item has to be active: 'A faire' or 'Terminé'
+        $navbarActiveItem = ($type === Task::TODO) ? 'navTodo' : 'navDone';
 
         return $this->render(
             'task/list.html.twig',
             [
-                'tasks' => $taskRepository->findBy(['isDone' => $isDone], ['createdAt' => 'DESC']),
+                'tasks' => $taskRepository->findByStatusWithOwner($isDone),
                 'hasTask' => $hasTask,
                 'listType' => $type,
-                $navName => true,
+                $navbarActiveItem => true,
             ]
         );
     }
@@ -46,7 +50,6 @@ class TaskController extends AbstractController
             $task->setOwner($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
-
             $em->persist($task);
             $em->flush();
 
@@ -63,7 +66,9 @@ class TaskController extends AbstractController
      */
     public function edit(Task $task, Request $request)
     {
-        $type = $this->getListType($task);
+        # Used to determine task_list route {type} argument
+        $taskListType = $this->getTaskListType($task);
+
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -73,13 +78,13 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_list', ['type' => $type]);
+            return $this->redirectToRoute('task_list', ['type' => $taskListType]);
         }
 
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'task' => $task,
-            'type' => $type,
+            'type' => $taskListType,
         ]);
     }
 
@@ -88,7 +93,9 @@ class TaskController extends AbstractController
      */
     public function toggleTask(Task $task)
     {
-        $type = $this->getListType($task);
+        # Used to determine task_list route {type} argument
+        $taskListType = $this->getTaskListType($task);
+
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
 
@@ -99,7 +106,7 @@ class TaskController extends AbstractController
             sprintf('La tâche %s a bien été marquée comme %s.', $task->getTitle(), $status)
         );
 
-        return $this->redirectToRoute('task_list', ['type' => $type]);
+        return $this->redirectToRoute('task_list', ['type' => $taskListType]);
     }
 
     /**
@@ -119,7 +126,7 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('task_list', ['type' => $this->getListType($task)]);
+        return $this->redirectToRoute('task_list', ['type' => $this->getTaskListType($task)]);
     }
 
     /**
@@ -127,7 +134,7 @@ class TaskController extends AbstractController
      *
      * @return string
      */
-    private function getListType(Task $task): string
+    private function getTaskListType(Task $task): string
     {
         return ($task->isDone()) ? Task::DONE : Task::TODO;
     }

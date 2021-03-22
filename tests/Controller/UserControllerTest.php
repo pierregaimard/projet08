@@ -3,10 +3,10 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
-use App\Test\AppWebTestCase;
+use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-final class UserControllerTest extends AppWebTestCase
+final class UserControllerTest extends AbstractAppWebTestCase
 {
     use ReloadDatabaseTrait;
 
@@ -233,7 +233,7 @@ final class UserControllerTest extends AppWebTestCase
 
         # Goto users list
         $crawler = $client->request('GET', '/users');
-        $deleteButton = $crawler->filterXPath('//a[contains(text(), "Delete")]')->last()->link();
+        $deleteButton = $crawler->filterXPath('//a[contains(text(), "Supprimer")]')->last()->link();
 
         # Click on delete button for the second user
         $crawler = $client->click($deleteButton);
@@ -242,7 +242,10 @@ final class UserControllerTest extends AppWebTestCase
         $crawler = $client->submitForm('Supprimer');
 
         # Check if return to homepage
-        $this->assertEquals('Liste des utilisateurs', $crawler->filter('h1')->text());
+        $this->assertStringContainsString(
+            'Liste des utilisateurs',
+            $crawler->filter('h1')->text(null, false)
+        );
         $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'TestUser']);
         # Check if user has been deleted
         $this->assertFalse($user instanceof User);

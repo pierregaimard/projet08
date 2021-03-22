@@ -22,7 +22,7 @@ class UserController extends AbstractController
             'user/list.html.twig',
             [
                 'users' => $this->getDoctrine()->getRepository(User::class)->findAll(),
-                'navUser' => true
+                'navUser' => true # Set "Utilisateurs" navbar item to active
             ]
         );
     }
@@ -38,7 +38,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            # Encrypts user password and removes user plainPassword
             $passwordManager->setUserPassword($user);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -61,7 +63,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            # Encrypts user password and removes user plainPassword
             $passwordManager->setUserPassword($user);
+
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
@@ -80,6 +84,7 @@ class UserController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         if ($request->isMethod('POST')) {
+            # User delete form csrf token management
             $token = new CsrfToken('token_delete_user', $request->get('csrf_token'));
             if (!$tokenManager->isTokenValid($token)) {
                 $this->addFlash('danger', "Jeton CSRF invalide.");

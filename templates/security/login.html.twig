@@ -1,36 +1,70 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    {# error message alert #}
     {% if error %}
-        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div
+            class="alert alert-danger"
+            role="alert">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
     {% endif %}
 
-    <form method="post" novalidate="novalidate">
+    <form
+        method="post"
+        novalidate="novalidate">
+
         {# Username #}
         <div class="form-group">
-            <label for="inputUsername">Nom d'utilisateur :</label>
+            <label for="inputUsername">
+                Nom d'utilisateur :
+            </label>
+
             <input
-                type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control"
-                required autofocus
-            >
+                type="text"
+                value="{{ last_username }}"
+                name="username"
+                id="inputUsername"
+                class="form-control"
+                required
+                autofocus>
         </div>
 
         {# Password #}
         <div class="form-group">
-            <label for="inputPassword">Mot de passe :</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" required>
+            <label for="inputPassword">
+                Mot de passe :
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                id="inputPassword"
+                class="form-control"
+                required>
         </div>
 
         {# Token #}
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_token_auth') }}">
+        <input
+            type="hidden"
+            name="_csrf_token"
+            value="{{ csrf_token('app_token_auth') }}">
 
         {# Remember me #}
         <div class="checkbox mb-3">
             <label>
-                <input type="checkbox" name="_remember_me"> Remember me
+                <input
+                    type="checkbox"
+                    name="_remember_me">
+                Remember me
             </label>
         </div>
 
-        <button class="btn btn-success mt-2" type="submit">Se connecter</button>
+        <button
+            class="btn btn-success mt-2"
+            type="submit">
+            Se connecter
+        </button>
     </form>
 {% endblock %}

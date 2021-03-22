@@ -4,11 +4,11 @@ namespace App\Tests\Controller;
 
 use App\Entity\Task;
 use App\Entity\User;
-use App\Test\AppWebTestCase;
+use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
-final class TaskControllerTest extends AppWebTestCase
+final class TaskControllerTest extends AbstractAppWebTestCase
 {
     use RefreshDatabaseTrait;
 

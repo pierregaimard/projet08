@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -66,9 +65,10 @@ class AppUserAuthenticator extends AbstractFormLoginAuthenticator implements Pas
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+        # Login form csrf token check
         $token = new CsrfToken('app_token_auth', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new CustomUserMessageAuthenticationException('Jeton CSRF invalide.');
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
@@ -83,7 +83,11 @@ class AppUserAuthenticator extends AbstractFormLoginAuthenticator implements Pas
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+            throw new CustomUserMessageAuthenticationException('Identifiants invalides.');
+        }
+
+        return true;
     }
 
     /**
