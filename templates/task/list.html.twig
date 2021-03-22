@@ -1,41 +1,70 @@
 {% extends 'base.html.twig' %}
 
 {% block header_img %}
-    <img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">
+    <img
+        class="slide-image"
+        src="{{ asset('img/todolist_content.jpg') }}"
+        alt="todo list">
 {% endblock %}
 
+
 {% block body %}
+
     {% if tasks is not empty %}
+        {# Task create button #}
         <div class="text-right mb-4">
-            <a href="{{ path('task_create') }}" class="btn btn-info">Créer une tâche</a>
+            <a
+                href="{{ path('task_create') }}"
+                class="btn btn-info">
+                Créer une tâche
+            </a>
         </div>
     {% endif %}
+
+    {# Task cards container #}
     <div class="row">
         <div class="col">
+
             {% if tasks is not empty %}
                 <div class="card-columns">
-                    {% for task in tasks %}
 
-                        <!-- Liste des tâches -->
+                    {% for task in tasks %}
+                        {# Task cards list #}
                         <div class="card shadow-sm rounded-lg">
                             <div class="card-body">
                                 <h5 class="card-title position-relative">
-                                    <a href="{{ path('task_edit', {'id' : task.id }) }}">{{ task.title }}</a>
+                                    {# Task title #}
+                                    <a href="{{ path('task_edit', {'id' : task.id }) }}">
+                                        {{ task.title }}
+                                    </a>
 
-
+                                    {# Task badge #}
                                     {% if task.isDone %}
-                                        <span class="position-absolute" style="top: -8px; right: -5px;">
-                                            <i class="bi bi-check2-square text-success" style="font-size: 2rem;"></i>
+                                        <span
+                                            class="position-absolute"
+                                            style="top: -8px; right: -5px;">
+
+                                            <i
+                                                class="bi bi-check2-square text-success"
+                                                style="font-size: 2rem;">
+                                            </i>
                                         </span>
                                     {% else %}
-                                        <span class="badge badge-pill badge-info position-absolute"
-                                              style="top: 0px; right: 0px; font-size: small"
-                                        >Todo</span>
+                                        <span
+                                            class="badge badge-pill badge-info position-absolute"
+                                            style="top: 0px; right: 0px; font-size: small">
+                                            Todo
+                                        </span>
                                     {% endif %}
+
                                 </h5>
 
-                                <p class="card-text">{{ task.content }}</p>
+                                {# Task content #}
+                                <p class="card-text">
+                                    {{ task.content }}
+                                </p>
 
+                                {# Task info #}
                                 <p class="card-text mt-4">
                                     <small class="text-muted">
                                         Ajoutée par {{ task.owner.username }} le {{ task.createdAt|date('d/m/Y') }}
@@ -43,64 +72,97 @@
                                 </p>
                             </div>
 
+                            {# Task buttons #}
                             <div class="card-footer">
                                 <div class="d-flex justify-content-end">
+
+                                    {# delete button #}
                                     {% if is_granted('TASK_DELETE', task) %}
                                         <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                                            <button class="btn btn-outline-danger btn-sm mr-2">Supprimer</button>
+                                            <button class="btn btn-outline-danger btn-sm mr-2">
+                                                Supprimer
+                                            </button>
                                         </form>
                                     {% endif %}
 
+                                    {# toggle button #}
                                     <form action="{{ path('task_toggle', {'id' : task.id }) }}">
                                         <button class="btn btn-outline-success btn-sm">
+
                                             {% if not task.isDone %}
                                                 Marquer comme faite
                                             {% else %}
                                                 Marquer non terminée
                                             {% endif %}
+
                                         </button>
                                     </form>
                                 </div>
                             </div>
+                            {# /. Task buttons #}
+
                         </div>
-                        <!-- /.Liste des tâches -->
+                        {# /.Task list #}
 
                     {% endfor %}
+
                 </div>
+
             {% elseif not hasTask %}
+                {# No task in the database #}
+                <div
+                    class="alert alert-warning d-flex justify-content-between align-items-center"
+                    role="alert">
+                    <div>
+                        Il n'y a pas encore de tâche enregistrée.
+                    </div>
 
-                <!-- Pas de tâche dans la base de données -->
-                <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
-                    <div>Il n'y a pas encore de tâche enregistrée.</div>
-
-                    <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+                    <a
+                        href="{{ path('task_create') }}"
+                        class="btn btn-warning pull-right">
+                        Créer une tâche
+                    </a>
                 </div>
-
             {% else %}
+                {# No task in {todos} or {done} list #}
+                <div
+                    class="alert alert-warning d-flex justify-content-between align-items-center"
+                    role="alert">
 
-                <!-- Pas de tâche dans la liste {todo} ou {done} -->
-                <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
                     {% if listType == 'todo' %}
-                        <div>Bravo! toutes vos tâches sont terminées</div>
+                        <div>
+                            Bravo! toutes vos tâches sont terminées
+                        </div>
 
                         <div>
-                            <a href="{{ path('task_list', {'type': 'done'}) }}" class="btn btn-warning">
+                            <a
+                                href="{{ path('task_list', {'type': 'done'}) }}"
+                                class="btn btn-warning">
                                 Voir les tâches terminées
                             </a>
 
-                            <a href="{{ path('task_create') }}" class="btn btn-success ml-2">
+                            <a
+                                href="{{ path('task_create') }}"
+                                class="btn btn-success ml-2">
                                 Créer une nouvelle tâche
                             </a>
                         </div>
                     {% else %}
-                        <div><strong>Aie!</strong> aucune tache n'est terminée pour l'instant...</div>
+                        <div>
+                            <strong>Aie!</strong>
+                            aucune tache n'est terminée pour l'instant...
+                        </div>
 
-                        <a href="{{ path('task_list', {'type': 'todo'}) }}" class="btn btn-warning ml-auto">
+                        <a
+                            href="{{ path('task_list', {'type': 'todo'}) }}"
+                            class="btn btn-warning ml-auto">
                             Voir les tâches à faire
                         </a>
                     {% endif %}
+
                 </div>
             {% endif %}
+
         </div>
     </div>
 {% endblock %}
