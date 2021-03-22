@@ -242,7 +242,10 @@ final class UserControllerTest extends AbstractAppWebTestCase
         $crawler = $client->submitForm('Supprimer');
 
         # Check if return to homepage
-        $this->assertEquals('Liste des utilisateurs', $crawler->filter('h1')->text());
+        $this->assertStringContainsString(
+            'Liste des utilisateurs',
+            $crawler->filter('h1')->text(null, false)
+        );
         $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'TestUser']);
         # Check if user has been deleted
         $this->assertFalse($user instanceof User);
