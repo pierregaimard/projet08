@@ -27,7 +27,10 @@ final class SecurityControllerTest extends AbstractAppWebTestCase
                 '_csrf_token' => 'fake'
             ]
         );
-        $this->assertEquals('Jeton CSRF invalide.', $crawler->filter('div[role="alert"]')->text());
+        $this->assertStringContainsString(
+            'Jeton CSRF invalide.',
+            $crawler->filter('div[role="alert"]')->text(null, false)
+        );
     }
 
     public function testUserNotFound()
@@ -38,7 +41,10 @@ final class SecurityControllerTest extends AbstractAppWebTestCase
         $client->request('GET', '/login');
 
         $crawler = $client->submitForm('Se connecter', ['username' => 'test', 'password' => 'test']);
-        $this->assertEquals('Nom d\'utilisateur introuvable', $crawler->filter('div[role="alert"]')->text());
+        $this->assertStringContainsString(
+            'Nom d\'utilisateur introuvable',
+            $crawler->filter('div[role="alert"]')->text(null, false)
+        );
     }
 
     public function testUserBadCredentials()
@@ -51,7 +57,10 @@ final class SecurityControllerTest extends AbstractAppWebTestCase
         $client->request('GET', '/login');
 
         $crawler = $client->submitForm('Se connecter', ['username' => 'TestUsername', 'password' => 'fake']);
-        $this->assertEquals('Identifiants invalides.', $crawler->filter('div[role="alert"]')->text());
+        $this->assertStringContainsString(
+            'Identifiants invalides.',
+            $crawler->filter('div[role="alert"]')->text(null, false)
+        );
     }
 
     public function testUserAuthenticationSuccess()
