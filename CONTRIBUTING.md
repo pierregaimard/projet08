@@ -1,6 +1,6 @@
 # How to contribute
 
-Welcome in **Todo & Co** company. This document explains how to contribute to this amazing
+Welcome in the Todo&Co company. This document explains how to contribute to this amazing
 project.
 
 ## Repository structure and workflow
