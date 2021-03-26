@@ -44,7 +44,9 @@ class TaskVoter extends Voter
 
         switch ($attribute) {
             case self::DELETE:
-                if ($this->canDelete($subject, $user)) return true;
+                if ($this->canDelete($subject, $user)) {
+                    return true;
+                }
         }
 
         return false;
