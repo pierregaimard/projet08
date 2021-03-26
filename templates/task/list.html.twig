@@ -77,7 +77,7 @@
                                 <div class="d-flex justify-content-end">
 
                                     {# delete button #}
-                                    {% if is_granted('TASK_DELETE', task) %}
+                                    {% if is_granted('DELETE', task) %}
                                         <form action="{{ path('task_delete', {'id' : task.id }) }}">
                                             <button class="btn btn-outline-danger btn-sm mr-2">
                                                 Supprimer
