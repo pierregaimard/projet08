@@ -65,9 +65,15 @@ class User implements UserInterface
      */
     private $email;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="owner", cascade="remove")
+     */
+    private $tasks;
+
     public function __construct()
     {
         $this->roles = [self::ROLE_USER];
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
