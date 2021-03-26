@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskVoter extends Voter
 {
-    public const DELETE = 'TASK_DELETE';
+    public const DELETE = 'DELETE';
 
     private Security $security;
 
@@ -31,10 +31,11 @@ class TaskVoter extends Voter
      * @param Task           $subject
      * @param TokenInterface $token
      *
-     * @return false
+     * @return bool
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
+        /** @var User $user */
         $user = $token->getUser();
 
         if (!$user instanceof UserInterface) {
@@ -43,7 +44,9 @@ class TaskVoter extends Voter
 
         switch ($attribute) {
             case self::DELETE:
-                return $this->canDelete($subject, $user);
+                if ($this->canDelete($subject, $user)) {
+                    return true;
+                }
         }
 
         return false;

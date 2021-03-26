@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Task;
 use App\Entity\User;
 use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
@@ -229,7 +230,16 @@ final class UserControllerTest extends AbstractAppWebTestCase
 
         # Create users
         $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
-        $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+        $userToDelete = $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        # Add a task to user
+        $task = new Task();
+        $task->setTitle('dd');
+        $task->setContent('ddd');
+        $task->setOwner($userToDelete);
+        $_em = $this->getEntityManager();
+        $_em->persist($task);
+        $_em->flush();
 
         # Goto users list
         $crawler = $client->request('GET', '/users');
@@ -249,5 +259,30 @@ final class UserControllerTest extends AbstractAppWebTestCase
         $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'TestUser']);
         # Check if user has been deleted
         $this->assertFalse($user instanceof User);
+        # Check if user task has been removed too.
+        $taskList = $this->getEntityManager()->getRepository(Task::class)->findBy(['owner' => $userToDelete]);
+        $this->assertEmpty($taskList);
+    }
+
+    public function testUserDeletionFormCsrfToken()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        # Create users
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $userToDelete = $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        $client->request('GET', sprintf('/users/%s/delete', $userToDelete->getId()));
+        $crawler = $client->submitForm('Supprimer', ['csrf_token' => 'FAKE']);
+
+        # Check invalid token message
+        $this->assertStringContainsString(
+            'Jeton CSRF invalide.',
+            $crawler->filter('div.alert-danger')->text(null, false)
+        );
+        $user = $this->getEntityManager()->getRepository(User::class)->find($userToDelete->getId());
+        # Check if user has not been deleted
+        $this->assertTrue($user instanceof User);
     }
 }

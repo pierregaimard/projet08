@@ -112,7 +112,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      * @IsGranted(
-     *     "TASK_DELETE",
+     *     "DELETE",
      *     subject="task",
      *     message="Vous n'êtes pas autorisé(e) à supprimer cette tâche",
      *     statusCode=403

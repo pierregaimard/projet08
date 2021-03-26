@@ -130,4 +130,22 @@ final class SecurityControllerTest extends AbstractAppWebTestCase
         # User is redirected to the login page
         $this->assertEquals(1, $crawler->filter('button:contains("Se connecter")')->count());
     }
+
+    public function testAccessToUnauthorizedResource()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        $this->createUser('TestUsername', 'password');
+
+        $crawler = $client->request('GET', '/tasks/todo');
+
+        # Check if the anonymous user is redirected to login form
+        $this->assertStringContainsString('Se connecter', $crawler->filter('button[type="submit"]')->text(null, false));
+
+        $crawler = $client->submitForm('Se connecter', ['username' => 'TestUsername', 'password' => 'password']);
+
+        # Check if user is redirected to requested tasks page after authentication success.
+        $this->assertEquals(1, $crawler->filter('div.card-columns')->count());
+    }
 }
