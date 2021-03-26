@@ -2,7 +2,6 @@
 
 namespace App\Tests\Repository;
 
-use App\Entity\Task;
 use App\Entity\User;
 use App\Test\AbstractAppWebTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
