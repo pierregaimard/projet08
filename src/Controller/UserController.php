@@ -87,7 +87,7 @@ class UserController extends AbstractController
             # User delete form csrf token management
             $token = new CsrfToken('token_delete_user', $request->get('csrf_token'));
             if (!$tokenManager->isTokenValid($token)) {
-                $this->addFlash('danger', "Jeton CSRF invalide.");
+                $this->addFlash('error', "Jeton CSRF invalide.");
 
                 return $this->redirectToRoute('user_list');
             }
