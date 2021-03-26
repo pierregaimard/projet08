@@ -263,4 +263,26 @@ final class UserControllerTest extends AbstractAppWebTestCase
         $taskList = $this->getEntityManager()->getRepository(Task::class)->findBy(['owner' => $userToDelete]);
         $this->assertEmpty($taskList);
     }
+
+    public function testUserDeletionFormCsrfToken()
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+
+        # Create users
+        $this->createUserAndLogIn($client, 'TestAdmin', 'MyStrong$Password', User::ROLE_ADMIN);
+        $userToDelete = $this->createUser('TestUser', 'MyStrong$Password', User::ROLE_USER);
+
+        $client->request('GET', sprintf('/users/%s/delete', $userToDelete->getId()));
+        $crawler = $client->submitForm('Supprimer', ['csrf_token' => 'FAKE']);
+
+        # Check invalid token message
+        $this->assertStringContainsString(
+            'Jeton CSRF invalide.',
+            $crawler->filter('div.alert-danger')->text(null, false)
+        );
+        $user = $this->getEntityManager()->getRepository(User::class)->find($userToDelete->getId());
+        # Check if user has not been deleted
+        $this->assertTrue($user instanceof User);
+    }
 }
