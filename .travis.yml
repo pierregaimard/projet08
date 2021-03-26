@@ -9,7 +9,6 @@ dist: focal
 branches:
   only:
     - develop
-    - clean-app
     - /^feature.*$/
 
 services:
