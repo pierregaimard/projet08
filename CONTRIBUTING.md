@@ -55,6 +55,7 @@ Finally, `hotfix` it is destroyed.
 1. Ask the lead developer for code review
 1. Improve your code if needed 
 1. Merge the branch into `develop`
+1. Write new feature documentation.
 
 ### Add a new release
 
