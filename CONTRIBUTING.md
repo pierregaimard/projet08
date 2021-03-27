@@ -43,12 +43,15 @@ Finally, `hotfix` it is destroyed.
 
 1. Add a new issue to the repository that describe the feature or the code modification.
 1. Create a new feature branch
+1. Build a first application performance profile with Blackfire
 1. Clone the project on your local machine
 1. Develop the new feature branch
 1. Push your commits in the `origin/feature/*` branch.
 1. Add a pull request and check the different code controls (Travis-Ci for tests and code
    coverage and CodeClimate/SymfonyInsight for code quality)
 1. Fix the issues reported on the analysis tools if needed
+1. Build a new application performance profile with Blackfire
+1. Compare to first profile and fix performance issues if needed
 1. Ask the lead developer for code review
 1. Improve your code if needed 
 1. Merge the branch into `develop`
@@ -72,6 +75,7 @@ Finally, `hotfix` it is destroyed.
 
 1. Add a new issue to the repository that describe the bug
 1. Create a `hotfix` branch
+1. Build a first application performance profile with Blackfire
 1. Clone the repository on your locale machine
 1. Fix the bug
 1. Write tests to ensure that the bug will not reoccur
@@ -79,6 +83,8 @@ Finally, `hotfix` it is destroyed.
 1. Create a pull request
 1. Verify and check the code controls (Travis-Ci, CodeClimate and SymfonyInsight)
 1. Fix the issues reported on the analysis tools if needed
+1. Build a new application performance profile with Blackfire
+1. Compare to first profile and fix performance issues if needed
 1. Ask the lead developer for code review
 1. Improve your code if needed
 1. Merge the branch into `master` with a new tag version (vx.x.x)
@@ -87,7 +93,7 @@ Finally, `hotfix` it is destroyed.
 
 ## How to write the code
 
-### Tests
+### Unit and Functional Tests
 
 Units and functional tests must be written for every new feature or code improvement. These tests
 should cover all possible paths of the code execution to ensure proper operation and adherence to
@@ -107,6 +113,11 @@ and the [Symfony coding standard](https://symfony.com/doc/4.4/contributing/code/
 The repository is also connected to CodeClimate and SymfonyInsight tools to guarantee its quality
 and maintainability. All reported issues must be fixed before you merge a feature in the
 `develop` branch.
+
+### Performance
+
+Before adding a new feature or application improvement, you should build a profile with Blackfire.
+At the end of the development, you should build a new profile and fix the issues if needed.
 
 ## Continuous integration
 
