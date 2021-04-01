@@ -22,7 +22,7 @@ the following command:
 ### Install project dependencies
 Then jump into the project directory `cd projet08`
 and install the project dependencies by running the command:  
-`composer install --classmap-authoritative`
+`composer install`
 
 ### Setup .env variables
 In the `.env` file, set up the different information:
@@ -54,6 +54,6 @@ Then launch the tests by running the following command:
 
 ### Dump the autoload for performance improvement
 Run the following command to improve loading performances
-`dump-autoload --classmap-authoritative`
+`composer dump-autoload --optimize`
 
 If the tests are all green you're done!.
