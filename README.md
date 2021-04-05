@@ -25,7 +25,8 @@ and install the project dependencies by running the command:
 `composer install`
 
 ### Setup .env variables
-In the `.env` file, set up the different information:
+Duplicate the `.env` var and rename it to `.env.local`. In the new
+`.env.local` file, set up the different information:
 
 #### Database URL
 Add your database information to `DATABASE_URL` variable
