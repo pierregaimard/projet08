@@ -1,0 +1,37 @@
+language: php
+php:
+  - '7.4'
+
+os: linux
+dist: focal
+
+# Git branches
+branches:
+  only:
+    - develop
+    - /^feature.*$/
+
+services:
+  - mysql
+
+install:
+  - composer install
+  - php bin/phpunit --group=none
+
+before_script:
+  # Prepare code coverage report for CodeClimate
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+  # Database
+  - php bin/console doctrine:database:create --env=test
+  - php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+script: php bin/phpunit --coverage-clover clover.xml
+
+after_script:
+  # Send code coverage report to CodeClimate
+  - ./cc-test-reporter after-build -t clover --exit-code $TRAVIS_TEST_RESULT
+
+notifications:
+  slack: dev-8zu1125:6ftFiNJjIkdaOix43mwCuvKN

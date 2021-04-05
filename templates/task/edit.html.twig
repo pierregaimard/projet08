@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{
+        form_start(form, {
+            'action' : path('task_edit', { 'id' : task.id }),
+            'attr': {'novalidate': 'novalidate'}
+        })
+    }}
+
+        {# Fields #}
+        {{ form_widget(form) }}
+
+        {# Buttons #}
+        <div class="row">
+            <div class="col">
+                <button
+                    type="submit"
+                    class="form-control btn btn-success px-5">
+                    Modifier
+                </button>
+            </div>
+
+            <div class="col">
+                <a
+                    href="{{ path('task_list', {'type': type}) }}"
+                    class="form-control btn btn-outline-secondary">
+                    Annuler
+                </a>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}

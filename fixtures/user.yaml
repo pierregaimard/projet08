@@ -1,0 +1,16 @@
+App\Entity\User:
+    admin:
+        username: 'Admin'
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$PYx4zlM94Gn7xkON/amM5w\$j834g8W52P4vR+JdMtoks4duEGdJeciDs+lqO0ogCGo'
+        email: 'admin@todo-co.com'
+        roles: ['ROLE_ADMIN']
+    user:
+        username: 'User'
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$PYx4zlM94Gn7xkON/amM5w\$j834g8W52P4vR+JdMtoks4duEGdJeciDs+lqO0ogCGo'
+        email: 'user@todo-co.com'
+        roles: ['ROLE_USER']
+    user_{1..8}:
+        username: <username()>
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$PYx4zlM94Gn7xkON/amM5w\$j834g8W52P4vR+JdMtoks4duEGdJeciDs+lqO0ogCGo'
+        email: <email()>
+        roles: ['ROLE_USER']

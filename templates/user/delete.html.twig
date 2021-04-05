@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block header_title %}
+    <h1 class="mt-5 text-center">
+        Etes-vous sure de vouloir supprimer l'utilisateur <strong>{{ user.username }}</strong> ?
+    </h1>
+{% endblock %}
+
+{% block header_img %}{% endblock %}
+
+{% block body %}
+    <form
+        action="{{ path('user_delete', {'id': user.id}) }}"
+        method="post"
+        class="text-center my-3">
+
+        {# Fields #}
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token('token_delete_user') }}">
+
+        {# Buttons #}
+        <button
+            type="submit"
+            class="btn btn-danger">
+            Supprimer
+        </button>
+
+        <a
+            href="{{ path('user_list') }}"
+            class="btn btn-outline-secondary">
+            Annuler
+        </a>
+    </form>
+{% endblock %}

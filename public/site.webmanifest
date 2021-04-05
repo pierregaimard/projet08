@@ -1,0 +1,12 @@
+{
+    "lang": "fr-FR",
+    "name": "ToDo & Co",
+    "short_name": "Todo&Co",
+    "description": "Une application pour gérer ses tâches au quotidien",
+    "start_url": "https://todo-co.pierregaimard.fr",
+    "scope": "https://todo-co.pierregaimard.fr/",
+    "orientation": "landscape",
+    "display": "browser",
+    "background_color": "#FFF",
+    "theme_color": "#e3f2fd"
+}

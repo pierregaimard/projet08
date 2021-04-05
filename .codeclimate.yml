@@ -1,0 +1,28 @@
+version: "2"
+
+plugins:
+  phpcodesniffer:
+    enabled: true
+    channel: beta
+    config:
+      standard: "PSR12"
+  phpmd:
+    enabled: true
+    config:
+      file_extensions:
+        - php
+      rulesets: "cleancode,codesize,controversial,design,unusedcode,phpmd.rulesets.xml"
+      
+exclude_patterns:
+  - "bin/"
+  - "config/"
+  - "migrations/"
+  - "public/"
+  - "src/DataFixtures"
+  - "src/Kernel.php"
+  - "tests/"
+  - "translations/"
+  - "var/"
+  - "vendor/"
+  - "node_modules/"
+  - "*.*"
